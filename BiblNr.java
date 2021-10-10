@@ -1,7 +1,5 @@
 package com.company;
 
-import groovy.json.JsonOutput;
-
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -54,25 +52,13 @@ class Dane {
 }
 
     public class BiblNr {
-        public static void main(String[] args) throws IOException {
-            ArrayList<Dane> kontakty = new ArrayList<>();
+
+        public static void edytowanie(int i, ArrayList<Dane> k) throws FileNotFoundException {
+            int wybor = 0;
+            int id = i;
+            ArrayList<Dane> kontakty = k;
             Scanner sc = new Scanner(System.in);
-            File file = new File("Kontakty.txt");
-            Scanner in = new Scanner(file);
-            int wybor = 0, id;
-
-            while(in.hasNext()){
-                Dane tmp = new Dane();
-                tmp.setImie(in.nextLine());
-                tmp.setNazwisko(in.nextLine());
-                tmp.setNumer(in.nextLine());
-                kontakty.add(tmp);
-            }
-
             while(wybor != 4) {
-                System.out.print("Podaj id osoby, ktorej dane chcesz edytowac: ");
-                id = sc.nextInt();
-                System.out.println();
                 kontakty.get(id).informacje();
                 System.out.println();
                 System.out.println("Co chcesz zmienic?");
@@ -100,18 +86,37 @@ class Dane {
                         break;
                 }
 
-                //FileWriter fw = new FileWriter("Kontakty.txt", true);
-                PrintWriter out = new PrintWriter("Kontakty.txt");
-                for (Dane d: kontakty) {
-                    out.println(d.getImie() + "\n" + d.getNazwisko() + "\n" + d.getNumer());
+                if(wybor != 4) {
+                    PrintWriter out = new PrintWriter("Kontakty.txt");
+                    for (Dane d: kontakty) {
+                        out.println(d.getImie() + "\n" + d.getNazwisko() + "\n" + d.getNumer());
+                    }
+                    out.close();
                 }
-                out.close();
 
                 if(wybor != 4) {
                     System.out.println("Dane zostały zaktualizowane");
                 }
                 System.out.println();
+
             }
+
+        }
+
+        public static void main(String[] args) throws IOException {
+            ArrayList<Dane> kontakty = new ArrayList<>();
+            File file = new File("Kontakty.txt");
+            Scanner in = new Scanner(file);
+
+            while(in.hasNext()){
+                Dane tmp = new Dane();
+                tmp.setImie(in.nextLine());
+                tmp.setNazwisko(in.nextLine());
+                tmp.setNumer(in.nextLine());
+                kontakty.add(tmp);
+            }
+
+            edytowanie(1, kontakty);
             
         }
     }
